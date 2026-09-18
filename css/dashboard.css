@@ -1,0 +1,66 @@
+.dashboard {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  padding: 10px 20px;
+  background-color: #333;
+  color: white;
+  flex-wrap: nowrap; /* كل شيء في نفس السطر */
+}
+
+/* Logo */
+.logo-container {
+  flex: 0 0 auto;
+}
+.logo {
+  height: 10px; /* صغّرت الصورة باش تدخل مع الاسم و nav */
+  width: 10px;
+  object-fit: contain;
+}
+
+/* Nom au centre */
+.center {
+  flex: 1 1 auto;
+  text-align: center;
+}
+.center h1, .center p {
+  margin: 0;
+  color: white;
+  font-weight: 600;
+}
+.center h1 { font-size: 1.2em; }
+.center p { font-size: 1em; }
+
+/* Navigation */
+.nav-bar {
+  flex: 0 0 auto;
+}
+.nav-bar ul {
+  display: flex;
+  gap: 10px;
+  list-style: none;
+  margin: 0;
+  padding: 0;
+}
+.nav-bar ul li a {
+  color: white;
+  text-decoration: none;
+  padding: 5px 10px;
+  border-radius: 5px;
+  background-color: #4674a8;
+}
+.nav-bar ul li a:hover {
+  background-color: #eea15a;
+}
+
+/* Responsive (optional) */
+@media (max-width: 1024px) {
+  .dashboard {
+    flex-wrap: wrap; /* يطيحو تحت بعضهم على الشاشات الصغيرة */
+    justify-content: center;
+  }
+  .nav-bar ul {
+    flex-wrap: wrap;
+    justify-content: center;
+  }
+}

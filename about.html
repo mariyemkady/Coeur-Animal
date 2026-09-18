@@ -1,0 +1,227 @@
+<!DOCTYPE html>
+<html lang="fr" dir="ltr">
+
+<head>
+  <meta charset="UTF-8" />
+
+  <title>Cœur Animal 
+</title>
+
+  <link rel="stylesheet" href="css/style.css" />
+  <link rel="stylesheet" href="css/programs.css">
+
+  <link rel="stylesheet"
+    href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.10.5/font/bootstrap-icons.css" />
+
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+
+  <style>
+    body {
+      font-family: Arial, sans-serif;
+      margin: 0;
+      padding: 0;
+    }
+
+    header {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      background: #f2f2f2;
+      padding: 10px 20px;
+    }
+
+    .header-left {
+      display: flex;
+      align-items: center;
+      gap: 10px;
+    }
+
+    #site-logo {
+      width: 50px;
+      height: 50px;
+      object-fit: contain;
+      display: none;
+    }
+
+    #site-name {
+      font-size: 20px;
+      margin: 0;
+    }
+
+    nav ul {
+      list-style: none;
+      display: flex;
+      gap: 15px;
+      margin: 0;
+      padding: 0;
+    }
+
+    nav a {
+      text-decoration: none;
+      color: #333;
+      font-weight: bold;
+    }
+
+    main {
+      padding: 30px;
+    }
+
+    .container {
+      max-width: 900px;
+      margin: auto;
+    }
+
+    .container h2 {
+      color: #026060;
+      margin-top: 30px;
+    }
+
+    .container p {
+      line-height: 1.7;
+      color: #444;
+    }
+
+    .container ul {
+      line-height: 2;
+    }
+
+    footer {
+      text-align: center;
+      padding: 20px;
+      background: #2d95b4;
+      color: white;
+      margin-top: 30px;
+    }
+  </style>
+</head>
+
+<body>
+
+  <header>
+
+    <div class="header-left">
+      <img id="site-logo">
+      <h1 id="site-name">Nom de l'Association</h1>
+    </div>
+
+   <nav>
+  <ul>
+    <li><a href="index.html">Accueil</a></li>
+    <li><a href="about.html">À propos</a></li>
+    <li><a href="rights.html">Protection</a></li>
+    <li><a href="help.html">Aide</a></li>
+    <li><a href="contact.html">Contact</a></li>
+    <li><a href="profil.html">Profil</a></li>
+  </ul>
+</nav>
+  </header>
+
+
+  <main>
+
+    <section class="container">
+
+      <h2 id="title-qui">🐾 Qui sommes-nous ?</h2>
+
+      <p id="text-qui">
+        Notre association est une organisation engagée dans la protection
+        et le bien-être des animaux. Nous œuvrons pour offrir une seconde
+        chance aux animaux abandonnés, maltraités ou en situation de danger.
+        Notre objectif est de créer un environnement plus sûr et plus
+        respectueux pour tous les animaux.
+      </p>
+
+
+      <h2 id="title-mission">❤️ Notre mission</h2>
+
+      <p id="text-mission">
+        Notre mission est de protéger les animaux, de prendre en charge
+        les animaux en situation de détresse, de faciliter leur adoption
+        et de sensibiliser le public au respect et au bien-être animal.
+        Nous encourageons également la solidarité et l'engagement citoyen
+        envers la cause animale.
+      </p>
+
+
+      <h2 id="title-vision">🌱 Notre vision</h2>
+
+      <p id="text-vision">
+        Nous souhaitons construire une société dans laquelle chaque animal
+        est traité avec respect, compassion et dignité. Notre vision est
+        de réduire l'abandon et la maltraitance des animaux et de favoriser
+        une culture de protection et de responsabilité envers eux.
+      </p>
+
+
+      <h2 id="title-valeurs">🤝 Nos valeurs</h2>
+
+      <ul id="list-valeurs">
+        <li>❤️ Respect et bien-être animal</li>
+        <li>🤝 Solidarité</li>
+        <li>🐾 Protection des animaux</li>
+        <li>🌱 Responsabilité</li>
+        <li>⚖️ Respect et compassion</li>
+      </ul>
+
+
+      <h2>🐶 Nos actions</h2>
+
+      <p>
+        Notre association agit à travers plusieurs initiatives :
+        sauvetage des animaux en danger, prise en charge des animaux
+        abandonnés, organisation d'actions d'adoption, campagnes de
+        sensibilisation et participation à des campagnes bénévoles.
+      </p>
+
+    </section>
+
+  </main>
+
+
+  <footer>
+    © 2025 | Association de protection des animaux | Tous droits réservés
+  </footer>
+
+
+  <script>
+
+    /* Charger paramètres depuis l'Admin */
+
+    function chargerParametres() {
+
+      const settings =
+        JSON.parse(localStorage.getItem("settings") || "{}");
+
+
+      if (settings.nom_fr) {
+
+        document.getElementById("site-name").textContent =
+          settings.nom_fr;
+
+      }
+
+
+      if (settings.logo) {
+
+        const logo = document.getElementById("site-logo");
+
+        logo.src = settings.logo;
+
+        logo.style.display = "block";
+
+      }
+
+    }
+
+
+    window.addEventListener(
+      "DOMContentLoaded",
+      chargerParametres
+    );
+
+  </script>
+
+</body>
+
+</html>
+

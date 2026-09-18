@@ -1,0 +1,327 @@
+<!DOCTYPE html>
+<html lang="fr">
+
+<head>
+
+<meta charset="UTF-8">
+
+<title>Admin - Messages</title>
+
+<style>
+
+body {
+  font-family: Arial;
+  padding: 20px;
+  background: #f5f5f5;
+}
+
+.message {
+  background: white;
+  padding: 15px;
+  border-left: 5px solid #ad880c;
+  margin-bottom: 15px;
+  border-radius: 8px;
+}
+
+.message h3 {
+  margin: 0 0 5px 0;
+}
+
+.message p {
+  margin: 5px 0;
+}
+
+.timestamp {
+  font-size: 0.9rem;
+  color: gray;
+}
+
+button {
+  margin-top: 10px;
+  padding: 8px 15px;
+  border: none;
+  border-radius: 5px;
+  cursor: pointer;
+  color: white;
+}
+
+.reply-btn {
+  background: #28a745;
+}
+
+.delete-btn {
+  background: #dc3545;
+  margin-left: 10px;
+}
+
+.replied-label {
+  background: #218838;
+  color: white;
+  padding: 3px 8px;
+  border-radius: 4px;
+  font-weight: bold;
+  font-size: 0.85rem;
+}
+
+.top-bar {
+  margin-bottom: 20px;
+}
+
+.top-bar a {
+  background-color: #85a7e7;
+  color: white;
+  padding: 10px 20px;
+  text-decoration: none;
+  border-radius: 6px;
+  font-weight: bold;
+}
+
+</style>
+
+</head>
+
+
+<body>
+
+
+<div class="top-bar">
+
+  <a href="dashboard.html">
+    🔙 Retour
+  </a>
+
+</div>
+
+
+<h1>📬 Messages reçus</h1>
+
+
+<div id="messagesContainer"></div>
+
+
+
+<script>
+
+
+// ===============================
+// Récupérer les messages
+// ===============================
+
+function getMessages() {
+
+  return JSON.parse(
+    localStorage.getItem('messages') || '[]'
+  );
+
+}
+
+
+
+// ===============================
+// Sauvegarder les messages
+// ===============================
+
+function saveMessages(messages) {
+
+  localStorage.setItem(
+    'messages',
+    JSON.stringify(messages)
+  );
+
+}
+
+
+
+// ===============================
+// Afficher les messages
+// ===============================
+
+function loadMessages() {
+
+  const container =
+    document.getElementById('messagesContainer');
+
+
+  container.innerHTML = '';
+
+
+  const messages = getMessages().sort(
+    (a, b) =>
+      new Date(b.created_at) -
+      new Date(a.created_at)
+  );
+
+
+
+  // Aucun message
+
+  if (messages.length === 0) {
+
+    container.innerHTML =
+      '<p>Aucun message reçu pour le moment.</p>';
+
+    return;
+
+  }
+
+
+
+  messages.forEach(msg => {
+
+    const msgEl =
+      document.createElement('div');
+
+
+    msgEl.className = 'message';
+
+
+
+    msgEl.innerHTML = `
+
+      <h3>
+
+        <a href="mailto:${msg.email}">
+          ${msg.email}
+        </a>
+
+        ${
+          msg.replied
+          ?
+          `<span class="replied-label">
+            Répondu ✓
+          </span>`
+          :
+          ''
+        }
+
+      </h3>
+
+
+      <p>
+        ${msg.message}
+      </p>
+
+
+      <p class="timestamp">
+
+        🕒
+        ${new Date(msg.created_at).toLocaleString()}
+
+      </p>
+
+
+      <div>
+
+        ${
+          !msg.replied
+          ?
+          `<button class="reply-btn">
+            Répondre
+          </button>`
+          :
+          ''
+        }
+
+
+        <button class="delete-btn">
+          Supprimer
+        </button>
+
+      </div>
+
+    `;
+
+
+
+    // ===============================
+    // Répondre
+    // ===============================
+
+    if (!msg.replied) {
+
+      const btnReply =
+        msgEl.querySelector('.reply-btn');
+
+
+      btnReply.addEventListener(
+        'click',
+        () => {
+
+          msg.replied = true;
+
+
+          saveMessages(
+            getMessages().map(
+              m => m.id === msg.id
+                ? msg
+                : m
+            )
+          );
+
+
+          window.location.href =
+            `mailto:${msg.email}`;
+
+
+          loadMessages();
+
+        }
+      );
+
+    }
+
+
+
+    // ===============================
+    // Supprimer
+    // ===============================
+
+    const btnDelete =
+      msgEl.querySelector('.delete-btn');
+
+
+    btnDelete.addEventListener(
+      'click',
+      () => {
+
+        if (
+          confirm(
+            'Voulez-vous vraiment supprimer ce message ?'
+          )
+        ) {
+
+          saveMessages(
+            getMessages().filter(
+              m => m.id !== msg.id
+            )
+          );
+
+
+          loadMessages();
+
+        }
+
+      }
+    );
+
+
+    container.appendChild(msgEl);
+
+  });
+
+}
+
+
+
+// Charger les messages au démarrage
+
+document.addEventListener(
+  'DOMContentLoaded',
+  loadMessages
+);
+
+</script>
+
+
+</body>
+</html>

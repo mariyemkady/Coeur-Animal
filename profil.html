@@ -1,0 +1,125 @@
+<!DOCTYPE html>
+<html lang="fr" dir="rtl">
+<head>
+<meta charset="UTF-8">
+<title>الملف الشخصي - Static Advanced</title>
+<style>
+body{
+  font-family:'Segoe UI',sans-serif;
+  background:linear-gradient(135deg,#f5f7fa,#c3cfe2);
+  display:flex;justify-content:center;align-items:center;
+  min-height:100vh;margin:0;direction:rtl;text-align:right;
+  transition:0.3s all;
+}
+.container{max-width:500px;width:100%;padding:20px;}
+h2{text-align:center;color:#1e3a8a;margin-bottom:30px;}
+form{
+  background:#fff;padding:30px;border-radius:12px;
+  box-shadow:0 8px 20px rgba(0,0,0,0.15);
+}
+input{
+  width:100%;padding:12px 15px;margin-bottom:20px;
+  border-radius:8px;border:1px solid #ccc;font-size:16px;
+}
+button{
+  width:100%;padding:12px;background:#1e3a8a;color:#fff;
+  border:none;border-radius:8px;font-size:16px;
+  cursor:pointer;margin-bottom:10px;
+}
+button:hover{background:#3b5bb5;}
+.logout{background:#e53935;}
+.logout:hover{background:#b71c1c;}
+.message{text-align:center;font-weight:bold;margin-top:15px;}
+.success{color:#43a047;}
+
+#toggle-theme{
+  position:absolute;top:10px;left:10px;
+  padding:8px 12px;border:none;border-radius:6px;
+  background:#1e3a8a;color:#fff;cursor:pointer;
+}
+
+/* Dark Mode */
+body.dark{background:#121212;color:#e0e0e0;}
+body.dark form{background:#1e1e1e;box-shadow:0 8px 20px rgba(0,0,0,0.5);}
+body.dark input{background:#2c2c2c;color:#e0e0e0;border:1px solid #555;}
+body.dark button{background:#90caf9;color:#121212;}
+body.dark .logout{background:#ef5350;color:#121212;}
+body.dark #toggle-theme{background:#90caf9;color:#121212;}
+</style>
+</head>
+<body>
+
+<button id="toggle-theme">🌙</button>
+
+<div class="container">
+<h2> Profile</h2>
+
+<form id="profile-form">
+  <input type="text" id="nom" placeholder="nom" required>
+  <input type="text" id="prenom" placeholder="prenom" required>
+  <input type="email" id="email" disabled>
+  <input type="tel" id="telephone" placeholder=" numero tel">
+  <button type="submit"> mise a jour</button>
+  <div id="message" class="message"></div>
+</form>
+
+<button class="logout" id="logout">logout </button>
+</div>
+
+<script>
+document.getElementById('toggle-theme')
+.addEventListener('click',()=>document.body.classList.toggle('dark'));
+
+let user=JSON.parse(localStorage.getItem('currentUser')||'{}');
+if(!user.email){ window.location.href='login.html'; }
+
+document.getElementById('nom').value=user.nom||'';
+document.getElementById('prenom').value=user.prenom||'';
+document.getElementById('email').value=user.email||'';
+document.getElementById('telephone').value=user.telephone||'';
+
+const form=document.getElementById('profile-form');
+const message=document.getElementById('message');
+
+form.addEventListener('submit', e => {
+  e.preventDefault();
+
+  // تحديث البيانات
+  user.nom = document.getElementById('nom').value.trim();
+  user.prenom = document.getElementById('prenom').value.trim();
+  user.telephone = document.getElementById('telephone').value.trim();
+
+  // حفظ current user
+  localStorage.setItem('currentUser', JSON.stringify(user));
+
+  // تحديث القائمة العامة للمستخدمين (Static Portfolio)
+  let users = JSON.parse(localStorage.getItem('users') || '[]');
+  let index = users.findIndex(u => u.email === user.email);
+
+  if (index >= 0) {
+    users[index] = user;
+  } else {
+    users.push(user);
+  }
+
+  localStorage.setItem('users', JSON.stringify(users));
+
+  // رسالة نجاح
+  message.textContent = 'Données mises à jour avec succès';
+  message.className = 'message success';
+
+  // 🔥 تحويل ذكي بعد 1 ثانية إلى الصفحة الرئيسية
+  setTimeout(() => {
+    window.location.href = 'index.html';
+  }, 1000);
+});
+
+document.getElementById('logout')
+.addEventListener('click',()=>{
+  localStorage.removeItem('currentUser');
+  window.location.href='login.html';
+});
+</script>
+
+</body>
+</html>

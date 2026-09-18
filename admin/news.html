@@ -1,0 +1,440 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+<meta charset="UTF-8" />
+<title>Admin - Actualités</title>
+
+<style>
+body {
+  font-family: Arial;
+  margin: 20px;
+  background: #f4f4f4;
+}
+
+.top-bar {
+  margin-bottom: 20px;
+}
+
+.top-bar a {
+  background-color: #85a7e7;
+  color: white;
+  padding: 10px 20px;
+  text-decoration: none;
+  border-radius: 6px;
+  font-weight: bold;
+}
+
+h1, h2 {
+  text-align: center;
+}
+
+form {
+  margin: 20px auto;
+  max-width: 700px;
+  background: white;
+  padding: 20px;
+  border-radius: 10px;
+}
+
+input, textarea {
+  display: block;
+  width: 100%;
+  margin-bottom: 10px;
+  padding: 8px;
+}
+
+button {
+  padding: 10px 20px;
+  background-color: #4760af;
+  color: white;
+  border: none;
+  border-radius: 6px;
+  cursor: pointer;
+}
+
+table {
+  width: 100%;
+  border-collapse: collapse;
+  background: white;
+  margin-top: 20px;
+}
+
+th, td {
+  border: 1px solid #ccc;
+  padding: 8px;
+  text-align: center;
+}
+
+img {
+  width: 60px;
+  height: 40px;
+  object-fit: cover;
+}
+</style>
+</head>
+
+<body>
+
+<div class="top-bar">
+  <a href="dashboard.html">🔙 Retour</a>
+</div>
+
+<h1>🐾 Ajouter une Actualité</h1>
+
+<form id="add-news-form">
+
+  <input
+    type="text"
+    id="titre_fr"
+    placeholder="Titre en français"
+    required
+  />
+
+  <textarea
+    id="contenu_fr"
+    placeholder="Contenu en français"
+    required
+  ></textarea>
+
+  <input
+    type="date"
+    id="date_publication"
+    required
+  />
+
+  <input
+    type="text"
+    id="categorie"
+    placeholder="Catégorie"
+  />
+
+  <label>Image (upload depuis ordinateur)</label>
+
+  <input
+    type="file"
+    id="image_file"
+    accept="image/*"
+  />
+
+  <button type="submit">Ajouter</button>
+
+</form>
+
+<h2>📋 Liste des Actualités</h2>
+
+<table>
+
+<thead>
+<tr>
+  <th>Titre FR</th>
+  <th>Date</th>
+  <th>Catégorie</th>
+  <th>Image</th>
+  <th>Actions</th>
+</tr>
+</thead>
+
+<tbody id="news-list"></tbody>
+
+</table>
+
+
+<script>
+
+/* =========================================
+   🔒 PROTECTION ADMIN
+========================================= */
+
+const session = JSON.parse(
+  localStorage.getItem("adminSession") || "null"
+);
+
+if (!session || !session.isLoggedIn) {
+  window.location.href = "login.html";
+}
+
+
+/* =========================================
+   📦 LOCAL STORAGE
+========================================= */
+
+function getNews() {
+
+  return JSON.parse(
+    localStorage.getItem("articles") || "[]"
+  );
+
+}
+
+function saveNews(news) {
+
+  localStorage.setItem(
+    "articles",
+    JSON.stringify(news)
+  );
+
+}
+
+
+/* =========================================
+   VARIABLES
+========================================= */
+
+let imageBase64 = "";
+let editingId = null;
+
+
+/* =========================================
+   📸 UPLOAD IMAGE
+========================================= */
+
+document
+  .getElementById("image_file")
+  .addEventListener("change", function(e) {
+
+    const file = e.target.files[0];
+
+    if (!file) return;
+
+    const reader = new FileReader();
+
+    reader.onload = function(event) {
+
+      imageBase64 = event.target.result;
+
+    };
+
+    reader.readAsDataURL(file);
+
+  });
+
+
+/* =========================================
+   ➕ AJOUTER / MODIFIER
+========================================= */
+
+document
+  .getElementById("add-news-form")
+  .addEventListener("submit", function(e) {
+
+    e.preventDefault();
+
+    let news = getNews();
+
+    const data = {
+
+      id: editingId || Date.now(),
+
+      titre_fr:
+        document.getElementById("titre_fr").value,
+
+      contenu_fr:
+        document.getElementById("contenu_fr").value,
+
+      date:
+        document.getElementById("date_publication").value,
+
+      categorie:
+        document.getElementById("categorie").value,
+
+      /*
+        Même nom que index.html
+      */
+      url_image: imageBase64
+
+    };
+
+
+    /* ✏️ MODIFICATION */
+
+    if (editingId) {
+
+      news = news.map(n =>
+        n.id === editingId
+          ? data
+          : n
+      );
+
+      editingId = null;
+
+    }
+
+    /* ➕ AJOUT */
+
+    else {
+
+      news.push(data);
+
+    }
+
+
+    saveNews(news);
+
+    this.reset();
+
+    imageBase64 = "";
+
+    document.querySelector(
+      "button[type='submit']"
+    ).textContent = "Ajouter";
+
+    afficherNews();
+
+  });
+
+
+/* =========================================
+   ✏️ MODIFIER
+========================================= */
+
+function modifierNews(id) {
+
+  const news = getNews();
+
+  const item = news.find(
+    n => n.id === id
+  );
+
+  if (!item) return;
+
+
+  document.getElementById("titre_fr").value =
+    item.titre_fr || "";
+
+  document.getElementById("contenu_fr").value =
+    item.contenu_fr || "";
+
+  document.getElementById("date_publication").value =
+    item.date || "";
+
+  document.getElementById("categorie").value =
+    item.categorie || "";
+
+
+  imageBase64 =
+    item.url_image || "";
+
+  editingId = id;
+
+
+  document.querySelector(
+    "button[type='submit']"
+  ).textContent =
+    "Enregistrer modification";
+
+
+  window.scrollTo({
+    top: 0,
+    behavior: "smooth"
+  });
+
+}
+
+
+/* =========================================
+   🗑 SUPPRIMER
+========================================= */
+
+function supprimerNews(id) {
+
+  if (
+    !confirm(
+      "Supprimer cette actualité ?"
+    )
+  ) return;
+
+
+  let news = getNews();
+
+  news = news.filter(
+    n => n.id !== id
+  );
+
+  saveNews(news);
+
+  afficherNews();
+
+}
+
+
+/* =========================================
+   📋 AFFICHAGE
+========================================= */
+
+function afficherNews() {
+
+  const list =
+    document.getElementById("news-list");
+
+  const news = getNews();
+
+  list.innerHTML = "";
+
+
+  news.forEach(item => {
+
+    const row =
+      document.createElement("tr");
+
+
+    row.innerHTML = `
+
+      <td>
+        ${item.titre_fr || ""}
+      </td>
+
+      <td>
+        ${item.date || ""}
+      </td>
+
+      <td>
+        ${item.categorie || ""}
+      </td>
+
+      <td>
+        ${
+          item.url_image
+            ? `<img src="${item.url_image}">`
+            : ""
+        }
+      </td>
+
+      <td>
+
+        <button
+          onclick="modifierNews(${item.id})"
+        >
+          ✏️ Modifier
+        </button>
+
+        <button
+          onclick="supprimerNews(${item.id})"
+        >
+          🗑 Supprimer
+        </button>
+
+      </td>
+
+    `;
+
+
+    list.appendChild(row);
+
+  });
+
+}
+
+
+/* =========================================
+   🚀 INIT
+========================================= */
+
+window.addEventListener(
+  "DOMContentLoaded",
+  afficherNews
+);
+
+</script>
+
+</body>
+</html>

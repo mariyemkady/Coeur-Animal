@@ -1,0 +1,285 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+<meta charset="UTF-8">
+<title>Protection - Animaux</title>
+<meta name="viewport" content="width=device-width, initial-scale=1.0" />
+
+<style>
+  body {
+    font-family: Arial, sans-serif;
+    max-width: 1100px;
+    margin: 2rem auto;
+    padding: 0 10px;
+  }
+
+  h1 {
+    text-align: center;
+    color: #0a6ebd;
+    margin-bottom: 20px;
+  }
+
+  table {
+    width: 100%;
+    border-collapse: collapse;
+    margin-bottom: 40px;
+  }
+
+  th, td {
+    border: 1px solid #ddd;
+    padding: 8px;
+    text-align: center;
+  }
+
+  th {
+    background: #0a6ebd;
+    color: white;
+  }
+
+  .top-bar {
+    margin-bottom: 20px;
+  }
+
+  .top-bar a {
+    background-color: #85a7e7;
+    color: white;
+    padding: 10px 20px;
+    text-decoration: none;
+    border-radius: 6px;
+    font-weight: bold;
+  }
+</style>
+</head>
+
+<body>
+
+<div class="top-bar">
+  <a href="dashboard.html">🔙 Retour</a>
+</div>
+
+<h1>🐾 Protection des animaux</h1>
+
+<!-- ================= MESSAGES ================= -->
+
+<h2>📩 Messages Contact</h2>
+
+<table>
+  <thead>
+    <tr>
+      <th>ID</th>
+      <th>Email</th>
+      <th>Message</th>
+      <th>Status</th>
+    </tr>
+  </thead>
+
+  <tbody id="messages-body"></tbody>
+</table>
+
+
+<!-- ================= INFORMATIONS ANIMAL ================= -->
+
+<h2>🐾 Animaux signalés</h2>
+
+<table>
+  <thead>
+    <tr>
+      <th>ID</th>
+      <th>Type</th>
+      <th>Nom</th>
+      <th>Description</th>
+      <th>Sexe</th>
+    </tr>
+  </thead>
+
+  <tbody id="animal-body"></tbody>
+</table>
+
+
+<!-- ================= LIEU ================= -->
+
+<h2>📍 Lieu où l'animal a été trouvé</h2>
+
+<table>
+  <thead>
+    <tr>
+      <th>ID</th>
+      <th>Adresse</th>
+      <th>Ville</th>
+      <th>Gouvernorat</th>
+      <th>Date trouvé</th>
+    </tr>
+  </thead>
+
+  <tbody id="lieu-body"></tbody>
+</table>
+
+
+<!-- ================= ÉTAT ================= -->
+
+<h2>🚑 État et intervention</h2>
+
+<table>
+  <thead>
+    <tr>
+      <th>ID</th>
+      <th>État</th>
+      <th>Urgence</th>
+      <th>Détails</th>
+    </tr>
+  </thead>
+
+  <tbody id="signalement-body"></tbody>
+</table>
+
+
+<script>
+
+  // ==========================================
+  // RÉCUPÉRER LES DONNÉES DE LOCALSTORAGE
+  // ==========================================
+
+  function getMessages() {
+    return JSON.parse(
+      localStorage.getItem('messages') || '[]'
+    );
+  }
+
+  function getAnimalInfo() {
+    return JSON.parse(
+      localStorage.getItem('animal_info') || '[]'
+    );
+  }
+
+  function getAnimalLieu() {
+    return JSON.parse(
+      localStorage.getItem('animal_lieu') || '[]'
+    );
+  }
+
+  function getSignalements() {
+    return JSON.parse(
+      localStorage.getItem('animal_signalement') || '[]'
+    );
+  }
+
+
+  // ==========================================
+  // AFFICHER LES MESSAGES
+  // ==========================================
+
+  function loadMessages() {
+
+    const tbody = document.getElementById('messages-body');
+
+    tbody.innerHTML = '';
+
+    getMessages().forEach(msg => {
+
+      tbody.innerHTML += `
+        <tr>
+          <td>${msg.id || ''}</td>
+          <td>${msg.email || ''}</td>
+          <td>${msg.message || ''}</td>
+          <td>
+            ${msg.replied
+              ? '✔ Répondu'
+              : '❌ Non répondu'}
+          </td>
+        </tr>
+      `;
+    });
+  }
+
+
+  // ==========================================
+  // AFFICHER LES INFORMATIONS DE L'ANIMAL
+  // ==========================================
+
+  function loadAnimalInfo() {
+
+    const tbody = document.getElementById('animal-body');
+
+    tbody.innerHTML = '';
+
+    getAnimalInfo().forEach(animal => {
+
+      tbody.innerHTML += `
+        <tr>
+          <td>${animal.id || ''}</td>
+          <td>${animal.type || ''}</td>
+          <td>${animal.nom || ''}</td>
+          <td>${animal.description || ''}</td>
+          <td>${animal.sexe || ''}</td>
+        </tr>
+      `;
+    });
+  }
+
+
+  // ==========================================
+  // AFFICHER LE LIEU
+  // ==========================================
+
+  function loadAnimalLieu() {
+
+    const tbody = document.getElementById('lieu-body');
+
+    tbody.innerHTML = '';
+
+    getAnimalLieu().forEach(lieu => {
+
+      tbody.innerHTML += `
+        <tr>
+          <td>${lieu.id || ''}</td>
+          <td>${lieu.adresse || ''}</td>
+          <td>${lieu.ville || ''}</td>
+          <td>${lieu.gouvernorat || ''}</td>
+          <td>${lieu.date_trouve || ''}</td>
+        </tr>
+      `;
+    });
+  }
+
+
+  // ==========================================
+  // AFFICHER L'ÉTAT DE L'ANIMAL
+  // ==========================================
+
+  function loadSignalements() {
+
+    const tbody = document.getElementById('signalement-body');
+
+    tbody.innerHTML = '';
+
+    getSignalements().forEach(signalement => {
+
+      tbody.innerHTML += `
+        <tr>
+          <td>${signalement.id || ''}</td>
+          <td>${signalement.etat || ''}</td>
+          <td>${signalement.urgence || ''}</td>
+          <td>${signalement.details || ''}</td>
+        </tr>
+      `;
+    });
+  }
+
+
+  // ==========================================
+  // CHARGEMENT DE LA PAGE
+  // ==========================================
+
+  window.addEventListener('DOMContentLoaded', () => {
+
+    loadMessages();
+    loadAnimalInfo();
+    loadAnimalLieu();
+    loadSignalements();
+
+  });
+
+</script>
+
+</body>
+</html>

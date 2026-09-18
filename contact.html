@@ -1,0 +1,128 @@
+<!DOCTYPE html>
+<html lang="fr" dir="ltr">
+<head>
+  <meta charset="UTF-8">
+  <title>Cœur Animal </title>
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.10.5/font/bootstrap-icons.css" />
+  <style>
+    body { font-family: Arial, sans-serif; margin: 0; padding: 0; background: #f4f4f4; }
+    header { display:flex; align-items:center; justify-content:space-between; background:#f2f2f2; padding:10px 20px; }
+    .header-left { display:flex; align-items:center; gap:10px; }
+    #site-logo { width:50px; height:50px; display:none; object-fit:cover; border-radius:5px; }
+    #site-name { font-size:20px; margin:0; }
+    nav ul { list-style: none; display: flex; gap: 15px; margin: 0; padding: 0; }
+    nav a { text-decoration: none; color: #333; font-weight: bold; padding: 5px 10px; }
+    nav li { position: relative; }
+    nav li ul { display: none; position: absolute; top: 100%; left: 0; background: #fff; border:1px solid #ccc; min-width:150px; z-index:100; }
+    nav li:hover ul { display: block; }
+    main.container { padding: 30px; max-width: 800px; margin: 20px auto; background: white; border-radius: 10px; box-shadow: 0 2px 6px rgba(0,0,0,0.1); }
+    h2, h3 { text-align: center; }
+    ul.contact-info { list-style: none; padding: 0; margin: 20px 0; }
+    ul.contact-info li { margin-bottom: 10px; display: flex; align-items: center; gap: 10px; }
+    input, textarea { width: 100%; padding: 10px; margin-bottom: 10px; border-radius:5px; border:1px solid #ccc; }
+    button { padding:10px 20px; background:#3654a5; color:white; border:none; border-radius:5px; cursor:pointer; }
+    #msgStatus { margin-top:10px; text-align:center; font-weight:bold; }
+    footer { text-align:center; padding:20px; background:#2d95b4; color:white; margin-top:30px; }
+  </style>
+</head>
+<body>
+
+<header>
+  <div class="header-left">
+    <img id="site-logo" alt="Logo">
+    <h1 id="site-name">Nom de l'Association</h1>
+  </div>
+ <nav>
+  <ul>
+     <li><a href="index.html">Accueil</a></li>
+    <li><a href="about.html">À propos</a></li>
+    <li><a href="rights.html">Protection</a></li>
+    <li><a href="help.html">Aide</a></li>
+    <li><a href="contact.html">Contact</a></li>
+    <li><a href="profil.html">Profil</a></li>
+  </ul>
+</nav>
+</header>
+
+<main class="container">
+  <h2>✉️ Contactez-nous</h2>
+
+  <p style="text-align:center;">Vous pouvez nous contacter via :</p>
+  <ul class="contact-info">
+    <li><i class="bi bi-envelope"></i><a href="mailto:exemple@gmail.com">exemple@gmail.com</a></li>
+    <li><i class="bi bi-telephone"></i><a href="tel:+21612345678">+216 12 345 678</a></li>
+    <li><i class="bi bi-geo-alt"></i>Adresse : Tataouine, Tunisie</li>
+    <li><i class="bi bi-facebook"></i><a href="https://www.facebook.com/" target="_blank">Facebook</a></li>
+    <li><i class="bi bi-tiktok"></i><a href="https://www.tiktok.com/fr/" target="_blank">TikTok</a></li>
+  </ul>
+
+  <hr>
+
+  <h3>📨 Envoyez un message</h3>
+  <input type="email" id="userEmail" placeholder="Votre e-mail..." required>
+  <textarea id="messageOnly" rows="5" placeholder="Votre message..." required></textarea>
+  <button id="sendMessageBtn">Envoyer</button>
+  <div id="msgStatus"></div>
+</main>
+
+<footer>© 2025 | Association nationale tunisienne | Tous droits réservés  
+ 
+</footer>
+
+<script>
+// ==== DYNAMIQUE LOGO & NOM ====
+function loadSettings() {
+  // Exemple: récupérer settings depuis localStorage
+  const settings = JSON.parse(localStorage.getItem('settings') || '{}');
+
+  if (settings.nom_fr) {
+    document.getElementById('site-name').textContent = settings.nom_fr;
+  }
+
+  if (settings.logo) {
+    const logo = document.getElementById('site-logo');
+    logo.src = settings.logo;
+    logo.style.display = 'block';
+  }
+}
+
+// ==== FORM ENVOI MESSAGE ====
+const sendBtn = document.getElementById('sendMessageBtn');
+const msgInput = document.getElementById('messageOnly');
+const emailInput = document.getElementById('userEmail');
+const statusDiv = document.getElementById('msgStatus');
+
+function getMessages() {
+  return JSON.parse(localStorage.getItem('messages') || '[]');
+}
+
+function saveMessages(messages) {
+  localStorage.setItem('messages', JSON.stringify(messages));
+}
+
+sendBtn.addEventListener('click', () => {
+  const email = emailInput.value.trim();
+  const message = msgInput.value.trim();
+
+  if (!email || !message) {
+    statusDiv.textContent = '❌ Veuillez remplir tous les champs';
+    statusDiv.style.color = 'red';
+    return;
+  }
+
+  const messages = getMessages();
+  messages.push({ id: Date.now(), email, message, replied: false, created_at: new Date().toISOString() });
+  saveMessages(messages);
+
+  emailInput.value = '';
+  msgInput.value = '';
+  statusDiv.textContent = '✅ Message envoyé !';
+  statusDiv.style.color = 'green';
+});
+
+window.addEventListener('DOMContentLoaded', loadSettings);
+</script>
+
+</body>
+</html>

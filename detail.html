@@ -1,0 +1,49 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+<meta charset="UTF-8">
+<title>Détails de l'article</title>
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<style>
+body { font-family: Arial, sans-serif; max-width:900px; margin:30px auto; background:#f9f9f9; padding:30px; border-radius:15px; }
+h1 { text-align:center; margin-bottom:20px; }
+img { max-width:100%; border-radius:10px; margin-bottom:20px; }
+p { font-size:1rem; line-height:1.5; margin-bottom:15px; }
+.top-bar { margin-bottom:20px; }
+.top-bar a { background:#4760af; color:white; padding:10px 20px; text-decoration:none; border-radius:6px; font-weight:bold; }
+</style>
+</head>
+<body>
+
+<div class="top-bar">
+  <a href="actus.html">🔙 Retour</a>
+</div>
+
+<h1 id="titre"></h1>
+<img id="image" src="">
+<div id="contenu"></div>
+
+<script>
+const news = JSON.parse(localStorage.getItem("news") || "[]");
+const selectedId = localStorage.getItem("selectedArticleId");
+
+if(selectedId){
+  const article = news.find(n=>n.id==selectedId);
+  if(article){
+    document.getElementById("titre").textContent = article.titre_fr + " | " + article.titre_ar;
+    if(article.image) document.getElementById("image").src = article.image;
+    document.getElementById("contenu").innerHTML = `
+      <p><strong>FR:</strong> ${article.contenu_fr}</p>
+      <p>🏷️ ${article.categorie || "Non catégorisé"}</p>
+      <p>📅 ${new Date(article.date).toLocaleDateString("fr-FR")}</p>
+    `;
+  } else {
+    document.getElementById("contenu").innerHTML="<p>Article introuvable</p>";
+  }
+} else {
+  document.getElementById("contenu").innerHTML="<p>Aucun article sélectionné</p>";
+}
+</script>
+
+</body>
+</html>

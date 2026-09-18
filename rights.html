@@ -1,0 +1,217 @@
+<!DOCTYPE html>
+<html lang="fr" dir="ltr">
+
+<head>
+  <meta charset="UTF-8" />
+
+  <title>Cœur Animal </title>
+
+  <link rel="stylesheet" href="css/style.css" />
+  <link rel="stylesheet" href="css/dashboard.css">
+  <link rel="stylesheet" href="css/programs.css">
+
+  <link rel="stylesheet"
+    href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.10.5/font/bootstrap-icons.css" />
+
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+
+  <style>
+    body {
+      font-family: Arial, sans-serif;
+      margin: 0;
+      padding: 0;
+    }
+
+    header {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      background: #f2f2f2;
+      padding: 10px 20px;
+    }
+
+    .header-left {
+      display: flex;
+      align-items: center;
+      gap: 10px;
+    }
+
+    #site-logo {
+      width: 50px;
+      height: 50px;
+      display: none;
+    }
+
+    #site-name {
+      font-size: 20px;
+      margin: 0;
+    }
+
+    nav ul {
+      list-style: none;
+      display: flex;
+      gap: 15px;
+      margin: 0;
+      padding: 0;
+    }
+
+    nav a {
+      text-decoration: none;
+      color: #333;
+      font-weight: bold;
+    }
+
+    main {
+      padding: 30px;
+      max-width: 900px;
+      margin: auto;
+    }
+
+    main h2 {
+      color: #026060;
+      margin-top: 30px;
+    }
+
+    main p {
+      line-height: 1.7;
+      color: #444;
+    }
+
+    footer {
+      text-align: center;
+      padding: 20px;
+      background: #2d95b4;
+      color: white;
+      margin-top: 30px;
+    }
+  </style>
+
+</head>
+
+<body>
+
+<header>
+
+  <div class="header-left">
+    <img id="site-logo">
+    <h1 id="site-name">Nom de l'Association</h1>
+  </div>
+
+  <nav>
+    <ul>
+       <li><a href="index.html">Accueil</a></li>
+    <li><a href="about.html">À propos</a></li>
+    <li><a href="rights.html">Protection</a></li>
+    <li><a href="help.html">Aide</a></li>
+    <li><a href="contact.html">Contact</a></li>
+    <li><a href="profil.html">Profil</a></li>
+    </ul>
+  </nav>
+
+</header>
+
+
+<main>
+
+  <h2>🐾 Protection des animaux</h2>
+
+  <p>
+    Tous les animaux ont le droit d'être traités avec respect,
+    compassion et dignité.
+  </p>
+
+  <p>
+    Notre association lutte contre l'abandon, la maltraitance
+    et toutes les formes de violence envers les animaux.
+  </p>
+
+  <p>
+    Nous encourageons l'adoption responsable et cherchons à offrir
+    aux animaux abandonnés un environnement sûr et adapté.
+  </p>
+
+  <p>
+    Les animaux blessés ou en danger doivent pouvoir bénéficier
+    d'une prise en charge et de soins appropriés.
+  </p>
+
+  <p>
+    Nous sensibilisons également le public à l'importance du respect
+    et de la protection des animaux.
+  </p>
+
+  <p>
+    Chacun peut contribuer à leur protection en signalant les cas
+    de maltraitance, en participant aux campagnes de bénévolat
+    ou en aidant les animaux dans le besoin.
+  </p>
+
+
+  <h2>❤️ Nos engagements</h2>
+
+  <p>
+    🐶 Lutter contre l'abandon des animaux.
+  </p>
+
+  <p>
+    🐱 Favoriser l'adoption responsable.
+  </p>
+
+  <p>
+    🚑 Aider les animaux blessés ou en danger.
+  </p>
+
+  <p>
+    🏠 Améliorer les conditions de vie des animaux recueillis.
+  </p>
+
+  <p>
+    📢 Sensibiliser le public au bien-être animal.
+  </p>
+
+</main>
+
+
+<footer>
+  © 2025 | Association de protection des animaux | Tous droits réservés
+</footer>
+
+
+<script>
+
+  /* Charger paramètres depuis l'Admin */
+
+  function chargerParametres() {
+
+    const settings =
+      JSON.parse(localStorage.getItem("settings") || "{}");
+
+    if (settings.nom_fr) {
+
+      document.getElementById("site-name").textContent =
+        settings.nom_fr;
+
+    }
+
+    if (settings.logo) {
+
+      const logo =
+        document.getElementById("site-logo");
+
+      logo.src = settings.logo;
+      logo.style.display = "block";
+
+    }
+
+  }
+
+  window.addEventListener(
+    "DOMContentLoaded",
+    chargerParametres
+  );
+
+</script>
+
+</body>
+</html>
+

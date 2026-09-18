@@ -1,0 +1,140 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+<meta charset="UTF-8">
+<title>Déconnexion Admin</title>
+<style>
+body {
+  font-family: Arial, sans-serif;
+  background: #f5f5f5;
+  padding: 20px;
+}
+h2, h3 { color: #333; }
+input, button {
+  width: 100%;
+  padding: 10px;
+  margin: 5px 0;
+  border-radius: 5px;
+  border: 1px solid #ccc;
+}
+button { cursor: pointer; }
+button:hover { opacity: 0.9; }
+#logoutBtn { background:#17deec; color:white; border:none; margin-top:10px; }
+table {
+  width: 100%;
+  border-collapse: collapse;
+  margin-top: 20px;
+  background:white;
+}
+th, td {
+  border: 1px solid #ddd;
+  padding: 12px;
+  text-align: center;
+}
+th { background:#2c3e50; color:white; }
+button.delete { background:#e74c3c; color:white; border:none; }
+button.add { background:#3498db; color:white; border:none; }
+.top-bar {
+  margin-bottom: 20px;
+}
+
+.top-bar a {
+  background-color: #85a7e7;
+  color: white;
+  padding: 10px 20px;
+  text-decoration: none;
+  border-radius: 6px;
+  font-weight: bold;
+}
+</style>
+</head>
+<body>
+<div class="top-bar">
+<a href="dashboard.html">🔙 Retour</a>
+</div>
+<h2>🔐 Déconnexion Admin</h2>
+
+<h3>➕ Ajouter Admin avant de sortir</h3>
+<input type="text" id="nom" placeholder="Nom complet">
+<input type="email" id="email" placeholder="Email">
+<input type="text" id="tel" placeholder="Téléphone">
+<input type="text" id="password" placeholder="Mot de passe">
+<button class="add" id="addAdmin">Créer Admin</button>
+
+<h3>📋 Liste des Admins</h3>
+<table>
+  <thead>
+    <tr>
+      <th>Nom</th>
+      <th>Email</th>
+      <th>Téléphone</th>
+      <th>Actions</th>
+    </tr>
+  </thead>
+  <tbody id="adminList"></tbody>
+</table>
+
+<button id="logoutBtn">🚪 Déconnexion</button>
+
+<script>
+// ======= CRUD Admins =======
+function getAdmins(){ return JSON.parse(localStorage.getItem("admins")||"[]"); }
+function saveAdmins(a){ localStorage.setItem("admins", JSON.stringify(a)); }
+
+function loadAdmins(){
+  const tbody = document.getElementById("adminList");
+  tbody.innerHTML = "";
+  getAdmins().forEach((admin,index)=>{
+    const tr = document.createElement("tr");
+    tr.innerHTML = `
+      <td>${admin.nom}</td>
+      <td>${admin.email}</td>
+      <td>${admin.tel}</td>
+      <td><button class="delete" onclick="deleteAdmin(${index})">🗑️ Supprimer</button></td>
+    `;
+    tbody.appendChild(tr);
+  });
+}
+
+document.getElementById("addAdmin").addEventListener("click", ()=>{
+  const nom = document.getElementById("nom").value.trim();
+  const email = document.getElementById("email").value.trim();
+  const tel = document.getElementById("tel").value.trim();
+  const pass = document.getElementById("password").value.trim();
+  if(!nom || !email || !tel || !pass){ alert("Remplissez tous les champs"); return; }
+
+  const a = getAdmins();
+  a.push({nom,email,tel,password:pass});
+  saveAdmins(a);
+  alert("Admin créé ✅");
+
+  document.getElementById("nom").value="";
+  document.getElementById("email").value="";
+  document.getElementById("tel").value="";
+  document.getElementById("password").value="";
+
+  loadAdmins();
+});
+
+window.deleteAdmin = (index)=>{
+  if(confirm("Confirmer suppression ?")){
+    const a = getAdmins();
+    a.splice(index,1);
+    saveAdmins(a);
+    loadAdmins();
+  }
+}
+
+// ======= Logout =======
+document.getElementById("logoutBtn").addEventListener("click", ()=>{
+  localStorage.removeItem("session");
+  alert("Déconnexion réussie ✅");
+  window.location.href = "login.html";
+});
+
+// Load admins list on page load
+loadAdmins();
+</script>
+
+</body>
+</html>

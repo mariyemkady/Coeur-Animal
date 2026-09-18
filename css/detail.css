@@ -1,0 +1,22 @@
+/* detail.css ✅ */
+#headerImage {
+  width: 100vw;
+  height: 350px;
+  object-fit: cover;
+  display: block;
+}
+
+#articleDetail {
+  max-width: 900px;
+  margin: 20px auto;
+  padding: 0 20px;
+}
+
+h2, h3 {
+  color: #222;
+}
+
+.ar-text {
+  direction: rtl;
+  text-align: right;
+}

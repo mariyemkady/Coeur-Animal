@@ -1,0 +1,37 @@
+
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+  <meta charset="UTF-8" />
+  <title>Vérification de session</title>
+  <script type="module">
+    import { createClient } from 'https://esm.sh/@supabase/supabase-js@2'
+
+     const supabase = createClient(
+    'https://erryjlobjkmsxrwgoqck.supabase.co',
+    'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6ImVycnlqbG9iamttc3hyd2dvcWNrIiwicm9sZSI6ImFub24iLCJpYXQiOjE3NTM0NTkwMjIsImV4cCI6MjA2OTAzNTAyMn0.t9T6jOD9ACPD6mEMhIrmtsyKf54WdoWp2D1Yp65vdsw'
+  );
+
+
+    // ✅ نعمل async function باش نتحقق من الجلسة
+    const verifierSession = async () => {
+      const { data: { session }, error } = await supabase.auth.getSession()
+
+      console.log("Session actuelle:", session)
+
+      if (session && session.user) {
+        // ✅ مسجّل → يمشي لـ index.html
+        window.location.href = "index.html"
+      } else {
+        // ❌ موش مسجّل → يمشي لـ login
+        window.location.href = "login_signup.html"
+      }
+    }
+
+    verifierSession()
+  </script>
+</head>
+<body>
+  <h3>Vérification de l'utilisateur...</h3>
+</body>
+</html>

@@ -1,0 +1,509 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+<meta charset="UTF-8">
+
+<title>مع بعضنا | Ensemble - Signaler un animal</title>
+
+<meta name="viewport" content="width=device-width, initial-scale=1.0" />
+
+<style>
+  body {
+    font-family: Arial, sans-serif;
+    max-width: 800px;
+    margin: 20px auto;
+    padding: 0 15px;
+    background: #f5f5f5;
+  }
+
+  h2 {
+    color:#0a6ebd;
+    margin-bottom:10px;
+  }
+
+  .form-block {
+    background:#fff;
+    border-radius:10px;
+    padding:15px;
+    margin-bottom:20px;
+    box-shadow:0 2px 6px rgba(0,0,0,0.1);
+  }
+
+  form {
+    display:none;
+    margin-top:10px;
+  }
+
+  label {
+    display:block;
+    margin:8px 0 3px;
+    font-weight:bold;
+  }
+
+  input,
+  select,
+  button {
+    width:100%;
+    padding:8px;
+    margin-bottom:10px;
+    border-radius:5px;
+    border:1px solid #ccc;
+    box-sizing:border-box;
+  }
+
+  button {
+    background:#0a6ebd;
+    color:white;
+    border:none;
+    cursor:pointer;
+    transition:0.3s;
+  }
+
+  button:hover {
+    background:#0954a1;
+  }
+
+  .top-bar {
+    margin-bottom:20px;
+  }
+
+  .top-bar a {
+    background-color:#85a7e7;
+    color:white;
+    padding:10px 20px;
+    text-decoration:none;
+    border-radius:6px;
+    font-weight:bold;
+  }
+</style>
+</head>
+
+
+<body>
+
+<div class="top-bar">
+  <a href="help.html">🔙 Retour</a>
+</div>
+
+
+<!-- Bloc 1 : Informations sur l'animal -->
+
+<section class="form-block">
+
+  <div style="display:flex; justify-content:space-between; align-items:center;">
+
+    <h2>🐾 Informations sur l'animal</h2>
+
+    <button type="button" class="toggle-btn">
+      Savoir plus
+    </button>
+
+  </div>
+
+
+  <form id="formAnimal">
+
+    <label>Type d'animal :</label>
+
+    <select id="typeAnimal" required>
+      <option value="">Choisir</option>
+      <option value="Chien">Chien</option>
+      <option value="Chat">Chat</option>
+      <option value="Oiseau">Oiseau</option>
+      <option value="Autre">Autre</option>
+    </select>
+
+
+    <label>Nom de l'animal (si connu) :</label>
+
+    <input
+      type="text"
+      id="nomAnimal"
+      placeholder="Ex : Max"
+    >
+
+
+    <label>Couleur / description :</label>
+
+    <input
+      type="text"
+      id="descriptionAnimal"
+      placeholder="Ex : petit chien marron"
+      required
+    >
+
+
+    <label>Sexe :</label>
+
+    <select id="sexeAnimal" required>
+      <option value="">Choisir</option>
+      <option value="Mâle">Mâle</option>
+      <option value="Femelle">Femelle</option>
+      <option value="Inconnu">Inconnu</option>
+    </select>
+
+
+    <button type="submit">
+      Enregistrer
+    </button>
+
+  </form>
+
+</section>
+
+
+
+<!-- Bloc 2 : Lieu -->
+
+<section class="form-block">
+
+  <div style="display:flex; justify-content:space-between; align-items:center;">
+
+    <h2>📍 Lieu où l'animal a été trouvé</h2>
+
+    <button type="button" class="toggle-btn">
+      Savoir plus
+    </button>
+
+  </div>
+
+
+  <form id="formLieu">
+
+    <label>Adresse / lieu :</label>
+
+    <input
+      type="text"
+      id="adresseAnimal"
+      placeholder="Ex : Rue Habib Bourguiba"
+      required
+    >
+
+
+    <label>Ville :</label>
+
+    <input
+      type="text"
+      id="villeAnimal"
+      required
+    >
+
+
+    <label>Gouvernorat :</label>
+
+    <input
+      type="text"
+      id="gouvernoratAnimal"
+      required
+    >
+
+
+    <label>Date où l'animal a été trouvé :</label>
+
+    <input
+      type="date"
+      id="dateTrouve"
+      required
+    >
+
+
+    <button type="submit">
+      Enregistrer
+    </button>
+
+  </form>
+
+</section>
+
+
+
+<!-- Bloc 3 : État de l'animal -->
+
+<section class="form-block">
+
+  <div style="display:flex; justify-content:space-between; align-items:center;">
+
+    <h2>🚑 État et besoin d'intervention</h2>
+
+    <button type="button" class="toggle-btn">
+      Savoir plus
+    </button>
+
+  </div>
+
+
+  <form id="formEtat">
+
+    <label>État de l'animal :</label>
+
+    <select id="etatAnimal" required>
+
+      <option value="">
+        Choisir
+      </option>
+
+      <option value="En bonne santé">
+        En bonne santé
+      </option>
+
+      <option value="Blessé">
+        Blessé
+      </option>
+
+      <option value="Malade">
+        Malade
+      </option>
+
+      <option value="En danger">
+        En danger
+      </option>
+
+      <option value="Abandonné">
+        Abandonné
+      </option>
+
+    </select>
+
+
+    <label>Besoin d'une intervention urgente ?</label>
+
+    <select id="urgenceAnimal" required>
+
+      <option value="non">
+        Non
+      </option>
+
+      <option value="oui">
+        Oui
+      </option>
+
+    </select>
+
+
+    <label>Informations supplémentaires :</label>
+
+    <input
+      type="text"
+      id="detailsAnimal"
+      placeholder="Décrivez la situation..."
+    >
+
+
+    <button type="submit">
+      Envoyer le signalement
+    </button>
+
+  </form>
+
+</section>
+
+
+
+<script>
+
+
+// ===============================
+// Toggle Savoir plus / Cacher
+// ===============================
+
+document.querySelectorAll('.toggle-btn').forEach(btn => {
+
+  btn.addEventListener('click', () => {
+
+    const form =
+      btn.closest('.form-block').querySelector('form');
+
+
+    if (
+      form.style.display === 'none' ||
+      form.style.display === ''
+    ) {
+
+      form.style.display = 'block';
+
+      btn.textContent = 'Cacher';
+
+    } else {
+
+      form.style.display = 'none';
+
+      btn.textContent = 'Savoir plus';
+
+    }
+
+  });
+
+});
+
+
+
+// ===============================
+// Formulaire Animal
+// ===============================
+
+document.getElementById('formAnimal').addEventListener(
+  'submit',
+  e => {
+
+    e.preventDefault();
+
+
+    const data = {
+
+      id: Date.now(),
+
+      type_animal:
+        document.getElementById('typeAnimal').value,
+
+      nom_animal:
+        document.getElementById('nomAnimal').value,
+
+      description:
+        document.getElementById('descriptionAnimal').value,
+
+      sexe:
+        document.getElementById('sexeAnimal').value
+
+    };
+
+
+    const list = JSON.parse(
+      localStorage.getItem('animal_info') || '[]'
+    );
+
+
+    list.push(data);
+
+
+    localStorage.setItem(
+      'animal_info',
+      JSON.stringify(list)
+    );
+
+
+    alert('Informations sur l’animal enregistrées !');
+
+
+    e.target.reset();
+
+
+    console.log('Animal Info:', list);
+
+  }
+);
+
+
+
+// ===============================
+// Formulaire Lieu
+// ===============================
+
+document.getElementById('formLieu').addEventListener(
+  'submit',
+  e => {
+
+    e.preventDefault();
+
+
+    const data = {
+
+      id: Date.now(),
+
+      adresse:
+        document.getElementById('adresseAnimal').value,
+
+      ville:
+        document.getElementById('villeAnimal').value,
+
+      gouvernorat:
+        document.getElementById('gouvernoratAnimal').value,
+
+      date_trouve:
+        document.getElementById('dateTrouve').value
+
+    };
+
+
+    const list = JSON.parse(
+      localStorage.getItem('animal_lieu') || '[]'
+    );
+
+
+    list.push(data);
+
+
+    localStorage.setItem(
+      'animal_lieu',
+      JSON.stringify(list)
+    );
+
+
+    alert('Lieu enregistré !');
+
+
+    e.target.reset();
+
+
+    console.log('Lieu Animal:', list);
+
+  }
+);
+
+
+
+// ===============================
+// Formulaire État
+// ===============================
+
+document.getElementById('formEtat').addEventListener(
+  'submit',
+  e => {
+
+    e.preventDefault();
+
+
+    const data = {
+
+      id: Date.now(),
+
+      etat:
+        document.getElementById('etatAnimal').value,
+
+      urgence:
+        document.getElementById('urgenceAnimal').value,
+
+      details:
+        document.getElementById('detailsAnimal').value
+
+    };
+
+
+    const list = JSON.parse(
+      localStorage.getItem('animal_signalement') || '[]'
+    );
+
+
+    list.push(data);
+
+
+    localStorage.setItem(
+      'animal_signalement',
+      JSON.stringify(list)
+    );
+
+
+    alert('Signalement envoyé avec succès !');
+
+
+    e.target.reset();
+
+
+    console.log('Signalement:', list);
+
+  }
+);
+
+</script>
+
+</body>
+</html>

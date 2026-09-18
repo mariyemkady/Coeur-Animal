@@ -1,0 +1,249 @@
+<!DOCTYPE html>
+<html lang="fr">
+
+<head>
+
+<meta charset="UTF-8">
+
+<title>Connexion Admin - Protection des animaux</title>
+
+<style>
+
+body {
+  font-family: 'Segoe UI';
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  height: 100vh;
+  background: #eef2f7;
+  margin: 0;
+}
+
+.login-box {
+  background: white;
+  padding: 30px;
+  border-radius: 10px;
+  box-shadow: 0 10px 20px rgba(0,0,0,0.1);
+  width: 350px;
+}
+
+h2 {
+  text-align: center;
+  color: #1e3a8a;
+}
+
+.subtitle {
+  text-align: center;
+  color: #666;
+  margin-bottom: 20px;
+}
+
+input,
+button {
+  width: 100%;
+  padding: 10px;
+  margin: 10px 0;
+  border-radius: 5px;
+  border: 1px solid #ccc;
+  box-sizing: border-box;
+}
+
+button {
+  border: none;
+  background: #1e3a8a;
+  color: white;
+  cursor: pointer;
+}
+
+button:hover {
+  background: #3b5bb5;
+}
+
+.message {
+  text-align: center;
+  margin-top: 10px;
+  font-weight: bold;
+}
+
+.error {
+  color: #e53935;
+}
+
+.success {
+  color: #43a047;
+}
+
+</style>
+
+</head>
+
+<body>
+
+
+<div class="login-box">
+
+  <h2>🐾 Connexion Admin</h2>
+
+  <div class="subtitle">
+    Association de protection des animaux
+  </div>
+
+
+  <input
+    type="email"
+    id="email"
+    placeholder="Email"
+  >
+
+
+  <input
+    type="password"
+    id="password"
+    placeholder="Mot de passe"
+  >
+
+
+  <button id="loginBtn">
+    🔐 Connexion
+  </button>
+
+
+  <div
+    id="msg"
+    class="message"
+  ></div>
+
+</div>
+
+
+<script>
+
+/* =========================================
+   👤 CRÉER UN ADMIN PAR DÉFAUT
+========================================= */
+
+if (!localStorage.getItem("admins")) {
+
+  localStorage.setItem(
+    "admins",
+    JSON.stringify([
+      {
+        nom: "Admin Principal",
+        email: "admin@site.com",
+        tel: "00000000",
+        password: "123456"
+      }
+    ])
+  );
+
+}
+
+
+/* =========================================
+   MESSAGE
+========================================= */
+
+const msg =
+  document.getElementById("msg");
+
+
+/* =========================================
+   🔐 CONNEXION
+========================================= */
+
+document
+  .getElementById("loginBtn")
+  .addEventListener("click", () => {
+
+
+    const email =
+      document
+        .getElementById("email")
+        .value
+        .trim();
+
+
+    const password =
+      document
+        .getElementById("password")
+        .value;
+
+
+    /* Vérification champs */
+
+    if (!email || !password) {
+
+      msg.textContent =
+        "⚠️ Remplissez tous les champs";
+
+      msg.className =
+        "message error";
+
+      return;
+
+    }
+
+
+    /* Récupérer les admins */
+
+    const admins =
+      JSON.parse(
+        localStorage.getItem("admins") || "[]"
+      );
+
+
+    /* Chercher admin */
+
+    const admin =
+      admins.find(
+        a =>
+          a.email === email &&
+          a.password === password
+      );
+
+
+    /* Connexion réussie */
+
+    if (admin) {
+
+      localStorage.setItem(
+        "adminSession",
+        JSON.stringify({
+          email: admin.email,
+          isLoggedIn: true
+        })
+      );
+
+
+      msg.textContent =
+        "✅ Connexion réussie";
+
+      msg.className =
+        "message success";
+
+
+      window.location.href =
+        "dashboard.html";
+
+    }
+
+
+    /* Connexion échouée */
+
+    else {
+
+      msg.textContent =
+        "❌ Email ou mot de passe incorrect";
+
+      msg.className =
+        "message error";
+
+    }
+
+  });
+
+</script>
+
+</body>
+
+</html>

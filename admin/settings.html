@@ -1,0 +1,267 @@
+<!DOCTYPE html>
+<html lang="fr">
+
+<head>
+<meta charset="UTF-8">
+
+<title>Paramètres - Association de protection des animaux</title>
+
+<style>
+body {
+  font-family: Arial, sans-serif;
+  margin: 30px auto;
+  max-width: 600px;
+  background-color: #f9f9f9;
+  padding: 20px;
+  border-radius: 12px;
+}
+
+label {
+  font-weight: bold;
+}
+
+input[type="text"],
+input[type="file"] {
+  width: 100%;
+  padding: 10px;
+  margin-bottom: 15px;
+}
+
+button {
+  background-color: #026060;
+  color: white;
+  padding: 10px 20px;
+  border: none;
+  border-radius: 8px;
+  cursor: pointer;
+}
+
+button:hover {
+  background-color: #014545;
+}
+
+img {
+  max-width: 150px;
+  margin-top: 10px;
+}
+
+.message {
+  margin-top: 15px;
+  font-weight: bold;
+}
+
+.success {
+  color: green;
+}
+
+.top-bar {
+  margin-bottom: 20px;
+}
+
+.top-bar a {
+  background-color: #85a7e7;
+  color: white;
+  padding: 10px 20px;
+  text-decoration: none;
+  border-radius: 6px;
+  font-weight: bold;
+}
+</style>
+
+</head>
+
+<body>
+
+<div class="top-bar">
+  <a href="dashboard.html">🔙 Retour</a>
+</div>
+
+<h1>🐾 Paramètres de l'association</h1>
+
+<form id="settings-form">
+
+  <label>Nom de l'association</label>
+
+  <input
+    type="text"
+    id="nom_fr"
+    placeholder="Nom de l'association"
+    required
+  >
+
+
+  <label>Logo de l'association</label>
+
+  <input
+    type="file"
+    id="logo_file"
+    accept="image/*"
+  >
+
+
+  <img
+    id="preview"
+    style="display:none;"
+    alt="Logo de l'association"
+  >
+
+
+  <button type="submit">
+    💾 Enregistrer
+  </button>
+
+
+  <div
+    id="message"
+    class="message"
+  ></div>
+
+</form>
+
+
+<script>
+
+/* =========================================
+   🔒 PROTECTION ADMIN
+========================================= */
+
+const session = JSON.parse(
+  localStorage.getItem("adminSession") || "null"
+);
+
+if (!session || !session.isLoggedIn) {
+
+  window.location.href = "login.html";
+
+}
+
+
+/* =========================================
+   VARIABLES
+========================================= */
+
+const preview =
+  document.getElementById("preview");
+
+let logoBase64 = "";
+
+
+/* =========================================
+   📥 CHARGER LES PARAMÈTRES EXISTANTS
+========================================= */
+
+const storedSettings = JSON.parse(
+  localStorage.getItem("settings") || "{}"
+);
+
+
+if (storedSettings.nom_fr) {
+
+  document.getElementById("nom_fr").value =
+    storedSettings.nom_fr;
+
+}
+
+
+if (storedSettings.logo) {
+
+  preview.src =
+    storedSettings.logo;
+
+  preview.style.display =
+    "block";
+
+  logoBase64 =
+    storedSettings.logo;
+
+}
+
+
+/* =========================================
+   📸 UPLOAD DU LOGO
+========================================= */
+
+document
+  .getElementById("logo_file")
+  .addEventListener("change", function(e) {
+
+    const file =
+      e.target.files[0];
+
+    if (!file) return;
+
+
+    const reader =
+      new FileReader();
+
+
+    reader.onload =
+      function(event) {
+
+        logoBase64 =
+          event.target.result;
+
+        preview.src =
+          logoBase64;
+
+        preview.style.display =
+          "block";
+
+      };
+
+
+    reader.readAsDataURL(file);
+
+  });
+
+
+/* =========================================
+   💾 SAUVEGARDER
+========================================= */
+
+document
+  .getElementById("settings-form")
+  .addEventListener("submit", function(e) {
+
+    e.preventDefault();
+
+
+    const nom =
+      document
+        .getElementById("nom_fr")
+        .value
+        .trim();
+
+
+    const message =
+      document.getElementById("message");
+
+
+    const settings = {
+
+      nom_fr: nom,
+
+      logo: logoBase64
+
+    };
+
+
+    localStorage.setItem(
+      "settings",
+      JSON.stringify(settings)
+    );
+
+
+    message.textContent =
+      "✅ Paramètres enregistrés avec succès";
+
+
+    message.className =
+      "message success";
+
+  });
+
+</script>
+
+</body>
+</html>
