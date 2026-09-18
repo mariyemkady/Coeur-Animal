@@ -4,7 +4,7 @@
 
 Patte Solidaire est un site web dédié à la protection et au bien-être des animaux.
 
-L'objectif du projet est de proposer une plateforme permettant aux visiteurs de découvrir les actions de l'association, consulter les actualités, signaler un animal en difficulté et contacter l'association.
+L'objectif du projet est de proposer une plateforme permettant aux visiteurs de découvrir les actions de l'association, consulter les actualités, signaler un animal en difficulté et contacter l'association,
 
 Le projet contient également un espace d'administration permettant de gérer les actualités, les messages et les paramètres du site.
 
